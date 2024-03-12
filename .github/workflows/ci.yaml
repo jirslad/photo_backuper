@@ -8,10 +8,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: |
-        working-directory: ./photo_backuper_app
-        pip install -r requirements.txt
+        pip install -r photo_backuper_app/requirements.txt
         python -m pip install -e photo_backuper
     - name: Test project
       run: |
-        working-directory: ./test
-        python test_backuper.py
+        python test/test_backuper.py
