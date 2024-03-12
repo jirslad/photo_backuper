@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}Photo Backuper - History{% endblock title %}
+
+{% block body %}
+    <!-- Table to display logs of mode, path from a list of dictionaries.-->
+    <div class="container-lg border mt-2 app-background">
+        <div class="row gy-2 p-2">
+            <div class="col">
+                <h5>Logs</h5>
+            </div>
+            <div class="col text-end">
+                <a class="btn btn-primary" href="/">Back</a>
+                <!-- <form action="/" method="GET">
+                    <input type="hidden">
+                    <button class="btn btn-primary" type="submit">Back</button>
+                </form> -->
+            </div>
+        </div>
+        <div class="row gy-2 p-2">
+            <table class="table table-hover" style="background-color: rgb(230, 243, 255);">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Mode</th>
+                        <th scope="col">Utility Folder</th>
+                        <th scope="col">Source Folder</th>
+                        <th scope="col">Target Folder</th>
+                        <th scope="col">
+                            <form action="/logs" method="POST">
+                                <input type="hidden" name="delete_all" value="{{ True }}">
+                                <button class="btn btn-outline-danger btn-sm" type="submit">Delete All</button>
+                            </form>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                        <tr>
+                            <td>{{ log.id }}</td>
+                            <td>{{ log.timestamp }}</td>
+                            <td>{{ log.mode }}</td>
+                            <td>{{ log.utility_folder }}</td>
+                            <td>{{ log.source_folder }}</td>
+                            <td>{{ log.target_folder }}</td>
+                            <td>
+                                <form action="/logs" method="POST">
+                                    <input type="hidden" name="log_id" value="{{ log.id }}">
+                                    <button class="btn btn-outline-danger btn-sm" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
+
+{% endblock body %}

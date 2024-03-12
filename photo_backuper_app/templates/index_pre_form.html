@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block title %}Photo Backuper{% endblock title %}
+
+{% block head %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"
+        integrity="sha512-tE1z+95+lMCGwy+9PnKgUSIeHhvioC9lMlI7rLWU0Ps3XTdjRygLcy4mLuL0JAoK4TLdQEyP0yOl/9dMOqpH/Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    <script>
+        var socket = io();
+        socket.on('connect', function() {
+            console.log('Socket.IO connected to server.');
+        });
+        socket.on('backup_message', function(msg) {
+            document.getElementById("messages").innerHTML += msg.message + "<br/>";
+        });
+    </script>
+    <style>
+        /* Minimal width */
+        @media (max-width:500px) {
+            body{
+                min-width:483px;
+                overflow-x:scroll;
+            }
+        }
+    </style>
+{% endblock head %}
+
+{% block body %}
+
+    <div class="container-lg border mt-2 app-background">
+        <div class="row gy-2 p-2">
+            
+            <!-- LEFT SIDE -->
+            <div class="col-lg-6">
+
+                <!-- INPUTS -->
+                <h5>Configuration</h5>
+                <form action="/" method="POST">
+                    <!--TODO: value="initial value" set to last value from logs db-->
+                    <div class="row mb-3">
+                        <label>Mode</label>
+                        <br>
+                        <small class="form-text text-muted">Run <i>Initialize</i> before first use.</small>
+                        <select class="px-2" name="mode" required>
+                            <!-- <option disabled selected value="">Select Mode</option> -->
+                            {% for mode, display in modes.items() %}
+                                <option value="{{ mode }}">{{ display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="row mb-3">
+                        <label>Parent Folder of Utility Folder</label>
+                        <br>
+                        <small class="form-text text-muted">Path to folder in which the utility folder (_photo_backuper) is located or shall be created.</small>
+                        <input class="form-control" type="search" name="utility_root_folder" placeholder="D:/Photos" required value="D:/initial_state/source">
+                    </div>
+                    <div class="row mb-3">
+                        <label>Source Folder</label>
+                        <br>
+                        <small class="form-text text-muted">Path to source folder <b>from</b> which the images will be backed up.</small>
+                        <input class="form-control" type="search" name="source_root_folder" placeholder="D:/Photos" required value="D:/initial_state/source">
+                    </div>
+                    <div class="row mb-3">
+                        <label>Target Folder</label>
+                        <br>
+                        <small class="form-text text-muted">Path to destination folder <b>to</b> which the images will be backed up.</small>
+                        <input class="form-control" type="search" name="target_root_folder" placeholder="F:/Photos_backup" required value="D:/initial_state/target" >
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary btn-success my-2" type="submit">Run Mode</button>
+                        </div>
+                        <div class="col text-end">
+                            <!-- TO HISTORY OF USAGE -->
+                            <a class="btn btn-primary my-2" href="/logs">Show History</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="col-lg-6">
+
+                <!-- PROGRESS LOG -->
+                <h5>Progress log</h5>
+                <div id="messages" class="overflow-auto vertical-center border"
+                    style="height: 200px; width: 100%; background-color: white;"
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock body %}
+
+
+
+
+        

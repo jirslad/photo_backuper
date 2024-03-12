@@ -1,0 +1,5 @@
+_deprecated_files/
+.vscode/
+.pytest_cache/
+__pycache__/
+photo_backuper_app/.env

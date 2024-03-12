@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block title %}Photo Backuper{% endblock title %}
+
+{% block head %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"
+        integrity="sha512-tE1z+95+lMCGwy+9PnKgUSIeHhvioC9lMlI7rLWU0Ps3XTdjRygLcy4mLuL0JAoK4TLdQEyP0yOl/9dMOqpH/Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    <script>
+        var socket = io();
+        socket.on('connect', function() {
+            console.log('Socket.IO connected to server.');
+        });
+        socket.on('backup_message', function(msg) {
+            document.getElementById("messages").innerHTML += msg.message + "<br/>";
+        });
+    </script>
+{% endblock head %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="vertical-center">
+            <!-- LEFT SIDE -->
+            <div style="width: 50%; float:left">
+
+                <!-- INPUTS -->
+                <h5>Configuration</h5>
+                <form action="/" method="POST">
+                    <!--TODO: value="initial value" set to last value from logs db-->
+                    <div>
+                        Mode
+                        <select name="mode" required>
+                            <!-- <option disabled selected value="">Select Mode</option> -->
+                            {% for mode, display in modes.items() %}
+                                <option value="{{ mode }}">{{ display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Utility Root Folder</label>
+                        <input class="form-control" type="search" name="utility_root_folder" placeholder="D:/Photos" required value="D:/initial_state/source">
+                        <small class="form-text text-muted">Path to folder where utility folder (ex: _photo_backuper) is located.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Source Root Folder</label>
+                        <input class="form-control" type="search" name="source_root_folder" placeholder="D:/Photos" required value="D:/initial_state/source">
+                        <small class="form-text text-muted">Path to source folder <b>from</b> which the images will be backed up.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Target Root Folder</label>
+                        <small class="form-text text-muted">Path to destination folder <b>to</b> which the images will be backed up.</small>
+                        <input class="form-control" type="search" name="target_root_folder" placeholder="F:/Photos_backup" required value="D:/initial_state/target" >
+                    </div>
+                    <button class="btn btn-primary" type="submit">Run Mode</button>
+                </form>
+
+                <!-- TO HISTORY OF USAGE -->
+                <!-- <button onclick="location.href='/logs'" type="button">
+                    Show History
+                </button> -->
+                <a class="btn btn-primary" href="/logs">Show History</a>
+
+            </div>
+
+
+            <!-- RIGHT SIDE -->
+            <div style="width: 50%; float:left">
+
+                <!-- PROGRESS LOG -->
+                <h5>Progress log</h5>
+                <div id="messages" class="overflow-auto"
+                    style="height: 200px; width: 100%; border: 1px solid black"
+                    class="vertical-center">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock body %}
+
+
+
+
+        

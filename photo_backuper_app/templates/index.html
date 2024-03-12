@@ -1,0 +1,115 @@
+{% extends "layout.html" %}
+
+{% block title %}Photo Backuper{% endblock title %}
+
+{% block head %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"
+        integrity="sha512-tE1z+95+lMCGwy+9PnKgUSIeHhvioC9lMlI7rLWU0Ps3XTdjRygLcy4mLuL0JAoK4TLdQEyP0yOl/9dMOqpH/Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    <script>
+        var socket = io();
+        socket.on('connect', function() {
+            console.log('Socket.IO connected to server.');
+        });
+        socket.on('backup_message', function(msg) {
+            document.getElementById("messages").innerHTML += msg.message + "<br/>";
+        });
+    </script>
+    <style>
+        /* Minimal width */
+        @media (max-width:602px) {
+            body{
+                min-width:585px;
+                overflow-x:scroll;
+            }
+        }
+    </style>
+{% endblock head %}
+
+{% block body %}
+
+    <div class="container-lg border mt-2 app-background">
+        <div class="row gy-2 p-2">
+            
+            <!-- LEFT SIDE -->
+            <div class="col-lg-6">
+
+                <!-- INPUTS -->
+                <h5>Configuration</h5>
+                <form action="/" method="POST">
+                    {{ input_form.csrf_token }}
+
+                    <!--TODO: value="initial value" set to last value from logs db-->
+                    <div class="row mb-3">
+                        <label for="mode">Mode</label>
+                        <br>
+                        <small class="form-text text-muted">Run <i>Initialize</i> before first use.</small>
+                        {{ input_form.mode(class="px-2") }}
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="utility_folder">Utility Folder's Parent Folder</label>
+                        <br>
+                        <small class="form-text text-muted">Path to folder in which the utility folder (_photo_backuper) is located or shall be created.</small>
+                        {{ input_form.utility_folder(class="form-control", type="search", placeholder="D:/Photos") }}
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="source_folder">Source Folder</label>
+                        <br>
+                        <small class="form-text text-muted">Path to source folder <b>from</b> which the images will be backed up.</small>
+                        {{ input_form.source_folder(class="form-control", type="search", placeholder="D:/Photos") }}
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="target_folder">Target Folder</label>
+                        <br>
+                        <small class="form-text text-muted">Path to destination folder <b>to</b> which the images will be backed up.</small>
+                        {{ input_form.target_folder(class="form-control", type="search", placeholder="D:/Photos_backup") }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            {{ input_form.run_button(class="btn btn-primary btn-success my-2", type="submit") }}
+                        </div>
+                        <div class="col text-end">
+                            <!-- TO HISTORY OF USAGE -->
+                            <a class="btn btn-primary my-2" href="/logs">Show History</a>
+                        </div>
+                    </div>
+
+                    {% if validation_message %}
+                    <!-- <div class="row">
+                        <b style="color: red;">Validation errors:</b>
+                        <div style="white-space: pre-line">{{ validation_message }}</div>
+                    </div> -->
+                    <div class="alert alert-danger d-flex align-items-center", role="alert">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                          </svg>
+                        <div>
+                            <!-- An example alert with an icon -->
+                            {{ validation_message }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </form>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="col-lg-6">
+
+                <!-- PROGRESS LOG -->
+                <h5>Progress log</h5>
+                <div id="messages" class="overflow-auto vertical-center border"
+                    style="height: 200px; width: 100%; background-color: white;">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock body %}
