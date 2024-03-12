@@ -6,8 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Run unit tests
+    - name: Install dependencies
       run: |
+        working-directory: ./photo_backuper_app
         pip install -r requirements.txt
         python -m pip install -e photo_backuper
-        python test/test_backuper.py
+    - name: Test project
+      run: |
+        working-directory: ./test
+        python test_backuper.py
