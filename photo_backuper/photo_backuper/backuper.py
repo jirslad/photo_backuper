@@ -323,7 +323,7 @@ class Backuper:
         with open(self.utility_folder / file_name, "r", encoding="utf-8") as f:
             project_folders = []
             for path in f.readlines():
-                path = path.strip()
+                path = path.strip().replace("\\", "/")
                 if not path or path.lower().startswith("example line"):
                     continue
                 if os.path.isabs(path):
