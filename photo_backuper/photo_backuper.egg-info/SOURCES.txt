@@ -4,4 +4,5 @@ photo_backuper/backuper.py
 photo_backuper.egg-info/PKG-INFO
 photo_backuper.egg-info/SOURCES.txt
 photo_backuper.egg-info/dependency_links.txt
+photo_backuper.egg-info/requires.txt
 photo_backuper.egg-info/top_level.txt
