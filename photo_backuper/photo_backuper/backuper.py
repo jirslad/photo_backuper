@@ -300,10 +300,10 @@ class Backuper:
         '''Returns sets of raw file formats and raw selection folder names.
         '''
         with open(self.utility_folder / "settings" / "raw_file_formats.txt", "r") as f:
-            self.raw_formats = set(x.lower() for x in f.read().split(", "))
+            self.raw_formats = set(x.lower().strip() for x in f.read().split(","))
 
         with open(self.utility_folder / "settings" / "raw_selection_folder_names.txt", "r") as f:
-            self.raw_selections = set(x.lower() for x in f.read().split(", "))
+            self.raw_selections = set(x.lower().strip() for x in f.read().split(","))
 
         projects_raw = self._read_project_folders_list(
             "project_folders_with_raw_on_pc.txt", self.source_folder)
@@ -388,11 +388,11 @@ class Backuper:
         Finds project folders in the source that do not exist in the target.
 
         Args:
-        source_project_folders (list): List of project folders in the source.
-        target_project_folders (list): List of project folders in the target.
+            source_project_folders (list): List of project folders in the source.
+            target_project_folders (list): List of project folders in the target.
         
         Returns:
-        List of new project folders.
+            list of new project folders
         """
         return list(set(source_project_folders) - set(target_project_folders))
 
