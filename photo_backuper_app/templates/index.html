@@ -51,21 +51,21 @@
                     <div class="row mb-3">
                         <label for="utility_folder">Utility Folder's Parent Folder</label>
                         <br>
-                        <small class="form-text text-muted">Path to folder in which the utility folder (_photo_backuper) is located or shall be created.</small>
+                        <small class="form-text text-muted">Absolute path to folder in which the utility folder (_photo_backuper) is located or shall be created.</small>
                         {{ input_form.utility_folder(class="form-control", type="search", placeholder="D:/Photos") }}
                     </div>
 
                     <div class="row mb-3">
                         <label for="source_folder">Source Folder</label>
                         <br>
-                        <small class="form-text text-muted">Path to source folder <b>from</b> which the images will be backed up.</small>
+                        <small class="form-text text-muted">Absolute path to source folder <b>from</b> which the images will be backed up.</small>
                         {{ input_form.source_folder(class="form-control", type="search", placeholder="D:/Photos") }}
                     </div>
 
                     <div class="row mb-3">
                         <label for="target_folder">Target Folder</label>
                         <br>
-                        <small class="form-text text-muted">Path to destination folder <b>to</b> which the images will be backed up.</small>
+                        <small class="form-text text-muted">Absolute path to destination folder <b>to</b> which the images will be backed up.</small>
                         {{ input_form.target_folder(class="form-control", type="search", placeholder="D:/Photos_backup") }}
                     </div>
 
