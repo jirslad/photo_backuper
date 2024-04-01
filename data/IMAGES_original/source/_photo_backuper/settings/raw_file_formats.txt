@@ -1,1 +1,1 @@
-raw, orf, dng, tiff, hdr, jpg, mov, mp4
+raw, orf, rw2, dng, tiff, tif, hdr, jpg, jpeg, mov, mp4
