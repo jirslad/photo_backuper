@@ -53,8 +53,9 @@ def execute_query(db_path, query, *args):
             cur.execute(query, args)
             con.commit()
             if query.strip().upper().startswith("SELECT"):
-                rows = cur.fetchall()
+                rows = cur.fetchall() # list of tuples
                 column_names = [desc[0] for desc in cur.description]
+                # list of dicts - each dict for one row
                 return [dict(zip(column_names, row)) for row in rows]
             return None
     except sqlite3.Error as e:
@@ -92,10 +93,10 @@ def index():
 
     validation_message = ""
     if input_form.validate_on_submit():
-        mode = input_form.mode.data
-        utility_folder = input_form.utility_folder.data # D:/initial_state/source   'C:/Python_notebooks/photo_backuper/data/IMAGES/source'
-        source_folder = input_form.source_folder.data   # D:/initial_state/source   'C:/Python_notebooks/photo_backuper/data/IMAGES/source'
-        target_folder = input_form.target_folder.data   # D:/initial_state/target   'C:/Python_notebooks/photo_backuper/data/IMAGES/target'
+        mode = input_form.mode.data                     # real backup   demo backup
+        utility_folder = input_form.utility_folder.data # D:\\OBRÁZKY   C:/Python_notebooks/photo_backuper/data/IMAGES/source
+        source_folder = input_form.source_folder.data   # D:\\OBRÁZKY   C:/Python_notebooks/photo_backuper/data/IMAGES/source
+        target_folder = input_form.target_folder.data   # F:\\OBRÁZKY   C:/Python_notebooks/photo_backuper/data/IMAGES/target
         
         # mode-specific validation
         if mode != Backuper.MODES[0] and not (source_folder and target_folder):
